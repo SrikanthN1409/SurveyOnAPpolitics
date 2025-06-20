@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quick Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <form action="/submit" method="POST"
+          class="bg-white w-full max-w-md p-6 rounded-xl shadow-lg">
+      <h1 class="text-xl font-bold mb-4 text-center">Quick Survey</h1>
+
+      <!-- Name input -->
+      <label class="block mb-3">
+        <span class="text-gray-700">Your Name</span>
+        <input type="text" name="name" required
+               class="w-full mt-1 p-2 border rounded-md" placeholder="e.g. John Doe. Encrypted before saving."/>
+      </label>
+
+      <!-- 10‑digit ID -->
+      <label class="block mb-4">
+        <span class="text-gray-700">Enter your Phone Number.</span>
+        <input type="text" name="number" inputmode="numeric" pattern="\d{10}" maxlength="10" required class="w-full mt-1 p-2 border rounded-md" placeholder="e.g. 1234567890. Encrypted before saving." />
+        <small class="text-sm text-gray-500">Must be exactly 10 digits</small>
+      </label>
+
+      <!-- Dropdown question -->
+      <label class="block mb-3">
+        <span class="text-gray-700">Which govt. is better, YSRCP/Kutami?</span>
+        <select name="govt_choice" required
+                class="w-full mt-1 p-2 border rounded-md">
+          <option>Kutami</option>
+          <option>YSRCP</option>
+          <option>Both are same</option>
+        </select>
+      </label>
+
+      <!-- Question 1 -->
+      <h2 class="text-md font-semibold mb-2">No arrest till now. Do you like TDP's stand on Jagan?</h2>
+      <div class="flex flex-col gap-2 mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="q1" value="Yes" required class="mr-2"> Yes
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="q1" value="No" required class="mr-2"> No
+        </label>
+      </div>
+
+      <!-- Question 2 -->
+      <h2 class="text-md font-semibold mb-2">Should Pawan Kalyan be CM to control Jagan?</h2>
+      <div class="flex flex-col gap-2 mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="q2" value="Yes" required class="mr-2"> Yes
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="q2" value="No" required class="mr-2"> No
+        </label>
+      </div>
+
+      <!-- Question 3 -->
+      <h2 class="text-md font-semibold mb-2">Do you believe Jagan can bypass the system on his cases?</h2>
+      <div class="flex flex-col gap-2 mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="q3" value="Yes" required class="mr-2"> Yes
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="q3" value="No" required class="mr-2"> No
+        </label>
+      </div>
+
+      <!-- Final dropdown -->
+      <label class="block mb-3">
+        <span class="text-gray-700">If Jagan is not arrested, will you vote for TDP/Kutami?</span>
+        <select name="vote_again" required class="w-full mt-1 p-2 border rounded-md">
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </label>
+
+      <!-- Submit -->
+      <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+        Submit
+      </button>
+    </form>
+  </body>
+</html>

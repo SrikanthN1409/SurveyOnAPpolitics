@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thanks!</title>
+
+  <!-- Open Graph & WhatsApp preview -->
+  <meta property="og:title" content="Take this 30‑second survey!" />
+  <meta property="og:description" content="Tell me what you think—only two questions." />
+  <meta property="og:url" content="<%= shareUrl %>" />
+  <meta property="og:image" content="<%= shareUrl %>/public/banner.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-6">
+  <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-3xl text-center">
+
+    <h2 class="text-2xl font-semibold mb-4">Thanks for participating!</h2>
+    <p class="mb-4">Here are the live results:</p>
+
+    <!-- ✅ Canvases for each chart -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-6">
+      <div>
+        <h3 class="text-md font-semibold mb-2">No Arrest- Do you like TDP's stand on Jagan?</h3>
+        <canvas id="chart_q1"></canvas>
+      </div>
+
+      <div>
+        <h3 class="text-md font-semibold mb-2">Should Pawan Kalyan be CM to control Jagan?</h3>
+        <canvas id="chart_q2"></canvas>
+      </div>
+
+      <div>
+        <h3 class="text-md font-semibold mb-2">Do you believe Jagan can bypass the system on his cases?</h3>
+        <canvas id="chart_q3"></canvas>
+      </div>
+
+      <div>
+        <h3 class="text-md font-semibold mb-2">Which govt. is better?</h3>
+        <canvas id="chart_govt_choice"></canvas>
+      </div>
+
+      <div>
+        <h3 class="text-md font-semibold mb-2">Will you vote again to Kutami if Jagan not arrest?</h3>
+        <canvas id="chart_vote_again"></canvas>
+      </div>
+    </div>
+
+
+    <!-- Share box -->
+    <div class="mt-6">
+      <h3 class="text-lg font-semibold mb-2">Customize your message before sharing</h3>
+      <textarea id="shareMessage"
+                class="w-full p-3 border rounded-md resize-y"
+                rows="4">
+I just participated in a survey! Want to see the results?
+<%= shareUrl %>
+      </textarea>
+
+      <div class="mt-4 flex flex-col sm:flex-row gap-3">
+        <a id="shareX" target="_blank"
+           class="bg-blue-600 text-white py-2 px-4 rounded-md text-center hover:bg-blue-700">
+          Share on X
+        </a>
+
+        <a id="shareWA" target="_blank"
+           class="bg-green-500 text-white py-2 px-4 rounded-md text-center hover:bg-green-600">
+          Share on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const stats = JSON.parse('<%- stats %>');
+
+  // Draw one pie chart
+  function createChart(id, stat) {
+    const canvas = document.getElementById(id);
+    if (!canvas) return;                    // safety guard
+    new Chart(canvas.getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: Object.keys(stat),
+        datasets: [{
+          data: Object.values(stat),
+          backgroundColor: [
+            '#10B981', '#EF4444', '#3B82F6',
+            '#F59E0B', '#8B5CF6', '#EC4899'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  }
+
+  // Update share links whenever the textarea changes
+  function updateShareLinks() {
+    const msg = document.getElementById('shareMessage').value.trim();
+    const encoded = encodeURIComponent(msg);
+    document.getElementById('shareX').href  =
+      `https://twitter.com/intent/tweet?text=${encoded}`;
+    document.getElementById('shareWA').href =
+      `https://wa.me/?text=${encoded}`;
+  }
+
+  // Wait until everything is on the page, then draw and wire up
+  document.addEventListener('DOMContentLoaded', () => {
+    createChart('chart_q1',          stats.q1);
+    createChart('chart_q2',          stats.q2);
+    createChart('chart_q3',          stats.q3);
+    createChart('chart_govt_choice', stats.govt_choice);
+    createChart('chart_vote_again',  stats.vote_again);
+
+    updateShareLinks(); // initialise links
+    document.getElementById('shareMessage')
+            .addEventListener('input', updateShareLinks);
+  });
+  </script>
+</body>
+</html>
