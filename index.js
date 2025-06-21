@@ -59,13 +59,14 @@ app.set("view engine", "ejs");
 app.get("/", (_req, res) => res.render("index"));
 
 app.post("/submit", async (req, res) => {
-  console.log("▶️ PROD BODY:", req.body);
+
   const { name, number, q1, q2, q3, govt_choice, vote_again } = req.body;
 
   // 🔒 Validate: name present & number exactly 12 digits
-  if (!name || !/^\d{10}$/.test(number)) {
-    return res.status(400).send("Missing or invalid required fields.");
-  }
+  if (!name || !number || number.length !== 10 || !/^\d{10}$/.test(number)) {
+  return res.status(400).send("Missing or invalid required fields.");
+}
+
 
   const nameHash   = hash(name.toLowerCase());
   const numberHash = hash(number);
